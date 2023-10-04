@@ -1,60 +1,76 @@
-﻿int yesCounter = 4;
-int noCounter = 2;
-int maybeCounter = 3;
-int total = yesCounter + noCounter + maybeCounter;
+﻿namespace SandBox
+{
 
-var yesPercent = Math.Round((yesCounter * 100.0) / total, 2);
-var noPercent = Math.Round((noCounter * 100.0) / total, 2);
-var maybePercent = Math.Round((maybeCounter * 100.0) / total, 2);
-var excess = Math.Round(100 - yesPercent - noPercent - maybePercent, 2);
-Console.WriteLine($"Excees:{excess}");
+    public class Counter
+    {
+        private double? _percent;
 
-if (yesCounter > noCounter)
-{
-    if (maybeCounter > yesCounter)
-    {
-        Console.WriteLine("Maybe Won");
-        maybePercent += excess;
-    }
-    else if (maybeCounter < yesCounter)
-    {
-        Console.WriteLine("Yes Won");
-        yesPercent += excess;
-    }
-    else
-    {
-        Console.WriteLine("Draw");
-        noPercent += excess;
-    }
-}
-else if (noCounter > yesCounter)
-{
-    if (maybeCounter > noCounter)
-    {
-        Console.WriteLine("Maybe Won");
-        maybePercent += excess;
-    }
-    else if (maybeCounter < noCounter)
-    {
-        Console.WriteLine("No Won");
-        noPercent += excess;
-    }
-    else
-    {
-        Console.WriteLine("Draw");
-        yesPercent += excess;
-    }
-}
-else if (maybeCounter > yesCounter || maybeCounter > noCounter)
-{
-    Console.WriteLine("Maybe WOn");
-    maybePercent += excess;
-}
-else
-{
-    Console.WriteLine("Draw");
-}
+        public string Name { get; }
+        public int Count { get; }
 
-Console.WriteLine($"Yes Counter:{yesCounter},Percentage:{Math.Round(yesPercent, 2)}%");
-Console.WriteLine($"No Counter:{noCounter},Percentage:{Math.Round(noPercent, 2)}%");
-Console.WriteLine($"No Counter:{maybeCounter},Percentage:{Math.Round(maybePercent, 2)}%");
+        public Counter(string name, int count)
+        {
+            Count = count;
+            Name = name;
+        }
+        public double GetPercent(int total) => _percent ?? (_percent = Math.Round((Count * 100.0) / total, 2)).Value;
+        public void AddExcess(double excess) => _percent += excess;
+    }
+    public class CounterManager
+    {
+        public List<Counter> Counters { get; set; }
+
+        public CounterManager(params Counter[] counters)
+        {
+            Counters = new List<Counter>(counters);
+        }
+
+        public int Total() => Counters.Sum(x => x.Count);
+        public double TotalPercentage() => Counters.Sum(x => x.GetPercent(Total()));
+        public void AnounceWinner()
+        {
+            var excess = Math.Round(100 - TotalPercentage(), 2);
+            Console.WriteLine($"Excees:{excess}");
+            var biggestAmountVotes = Counters.Max(x => x.Count);
+            var winners = Counters.Where(x => x.Count == biggestAmountVotes).ToList();
+            if (winners.Count == 1)
+            {
+                var winner = winners.First();
+                winner.AddExcess(excess);
+                Console.WriteLine($"{winner.Name} Won!");
+            }
+            else
+            {
+                if (winners.Count != Counters.Count)
+                {
+                    var lowestAmountVotes = Counters.Min(x => x.Count);
+                    var loser = Counters.First(x => x.Count == lowestAmountVotes);
+                    loser.AddExcess(excess);
+                }
+                Console.WriteLine(string.Join(" -DRAW- ", winners.Select(x => x.Name)));
+            }
+
+            foreach (var item in Counters)
+            {
+                Console.WriteLine($"{item.Name} Counts: {item.Count}, Percentage: {item.GetPercent(Total())}%");
+            }
+
+            Console.WriteLine($"Total Percentage:{Math.Round(TotalPercentage(), 2)}%");
+        }
+    }
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var yes = new Counter("Yes", 4);
+            var no = new Counter("No", 4);
+            var maybe = new Counter("Maybe", 4);
+            var Hopefully = new Counter("Hopefully", 4);
+
+            var manager = new CounterManager(yes, no, maybe, Hopefully);
+            
+            manager.AnounceWinner();
+
+        }
+    }
+}
