@@ -1,6 +1,5 @@
 ﻿namespace SandBox
 {
-
     public class Counter
     {
         private double? _percent;
