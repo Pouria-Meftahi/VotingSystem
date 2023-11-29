@@ -13,14 +13,14 @@
         [Fact]
         public void GetCounterStatistics_IncludesCounterName()
         {
-            var statistics = _counter.GetStatistics(5);
+            var statistics = new CounterManager().GetStatistics(_counter,5);
             Assert.Equal(CounterName, _counter.Name);
         }
 
         [Fact]
         public void GetCounterStatistics_IncludesCounterCount()
         {
-            var statistics = _counter.GetStatistics(5);
+            var statistics = new CounterManager().GetStatistics(_counter, 5);
             Assert.Equal(5, statistics.Count);
         }
 
@@ -32,7 +32,7 @@
         public void GetCounterStatistics_ShowsPercentageBasedOnTotalCount(int count, int total, double expected)
         {
             _counter.Count = count;
-            var statistics = _counter.GetStatistics(total);
+            var statistics = new CounterManager().GetStatistics(_counter, total);
             Assert.Equal(expected, statistics.Percent);
         }
 
@@ -98,20 +98,16 @@
         public string Name { get; set; }
         public int Count { get; set; }
         public double Percent { get; set; }
-        internal Counter GetStatistics(int totalCount)
-        {
-            //if (totalCount == 10)
-            //    Percent = 50;
-            //else if (totalCount == 3)
-            //    Percent = 33.33;
-            //else if (totalCount == 8)
-            //    Percent = 25;
-            Percent = CounterManager.RoundUp(Count * 100.0 / totalCount);
-            return this;
-        }
+      
     }
     public class CounterManager
     {
+        internal Counter GetStatistics(Counter counter,int totalCount)
+        {
+            counter.Percent = RoundUp(counter.Count * 100.0 / totalCount);
+            return counter;
+        }
+
         internal void ResolveExcess(List<Counter> counters)
         {
             var totalPercent = counters.Sum(s => s.Percent);
@@ -131,6 +127,6 @@
                 lowestCounter.Percent = RoundUp(lowestCounter.Percent+excess);
             }
         }
-        internal static double RoundUp(double num) => Math.Round(num, 2);
+        private static double RoundUp(double num) => Math.Round(num, 2);
     }
 }

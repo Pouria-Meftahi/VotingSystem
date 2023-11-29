@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34112.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandBox", "SandBox\SandBox.csproj", "{5D7669C0-ACE4-4FB7-87A8-6D0313E86ABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingSystem.Test", "VotingSystem.Test\VotingSystem.Test.csproj", "{9F108537-8600-41FC-883B-F58E4DF89252}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VotingSystem.Test", "VotingSystem.Test\VotingSystem.Test.csproj", "{9F108537-8600-41FC-883B-F58E4DF89252}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingSystem", "VotingSystem\VotingSystem.csproj", "{812D2D74-8E2C-4AAD-BE03-09662B4B7798}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9F108537-8600-41FC-883B-F58E4DF89252}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F108537-8600-41FC-883B-F58E4DF89252}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F108537-8600-41FC-883B-F58E4DF89252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{812D2D74-8E2C-4AAD-BE03-09662B4B7798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{812D2D74-8E2C-4AAD-BE03-09662B4B7798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{812D2D74-8E2C-4AAD-BE03-09662B4B7798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{812D2D74-8E2C-4AAD-BE03-09662B4B7798}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
